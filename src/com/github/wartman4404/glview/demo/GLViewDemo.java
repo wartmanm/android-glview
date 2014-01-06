@@ -30,6 +30,8 @@ public class GLViewDemo extends Activity {
     private long getTime() {
     	return System.currentTimeMillis();
     }
+    
+    String[] elementNames;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,8 +44,8 @@ public class GLViewDemo extends Activity {
         final GLAnimation spin = new RotateAnimation(centerX, centerY, centerZ, 0, 1, 0, 0, 360);
         timer = new PassiveStopwatch();
         AnimateOngoingInstance rotateAnim = spin.new AnimateOngoingInstance(timer, 3000);
-        String[] names = mGLView.getRenderer().getElementNames();
-        for (String name: names) {
+        elementNames = mGLView.getRenderer().getElementNames();
+        for (String name: elementNames) {
         	mGLView.getRenderer().addAnimation(name, rotateAnim);
         }
         mGLView.setOnLongClickListener(new OnLongClickListener() {
@@ -53,18 +55,19 @@ public class GLViewDemo extends Activity {
 			}
 		});
         mGLView.setOnClickListener(new OnClickListener() {
+        	int visibleIndex = 0;
 			public void onClick(View v) {
-				long time = getTime();
-				if (timer.isRunning()) {
-					Log.i("onclick", "pausing anims");
-					timer.stop(time);
-				} else {
-					Log.i("onclick", "starting anims");
-					timer.start(time);
-				}
+				hideAllBut(visibleIndex = (visibleIndex+1) % elementNames.length);
 			}
         });
         timer.start(getTime());
+    }
+    
+    public void hideAllBut(int visibleElement) {
+    	Log.i("demo", "making element " + elementNames[visibleElement] + " visible");
+    	for (int i = 0; i < elementNames.length; i++) {
+    		mGLView.getRenderer().setVisibility(elementNames[i], i == visibleElement);
+    	}
     }
 
 	@Override
