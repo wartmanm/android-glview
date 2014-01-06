@@ -108,6 +108,7 @@ public class ObjSaver {
 		GLMaterialSave[] materials = new GLMaterialSave[count];
 		for (int i = 0; i < count; i++) {
 			int id = in.readByte();
+			System.err.println(String.format("material %d: type %d", i, id));
 			GLMaterialSave save = loadMaterial(id, in);
 			materials[i] = save;
 		}
@@ -142,7 +143,9 @@ public class ObjSaver {
 			BoundingBox bbox = new BoundingBox(in);
 			int groupSize = in.readInt();
 			GLElement elements[] = new GLElement[groupSize];
+			System.err.println(String.format("Element group \"%s\" with %d elements and bounding box %s", name, groupSize, bbox));
 			for (int j = 0; j < groupSize; j++) {
+				System.err.print("Element " + j + ": ");
 				elements[j] = loadElement(in, materials, factories);
 			}
 			groups.put(name, new GLElementGroup(elements, bbox));
@@ -151,10 +154,12 @@ public class ObjSaver {
 	}
 	
 	private static GLElement loadElement(DataInputStream in, GLMaterialSave[] materials, MaterialFactories factories) throws IOException {
-		GLMaterialSave save = materials[in.readInt()];
+		int materialIndex = in.readInt();
+		GLMaterialSave save = materials[materialIndex];
 		int indexCount = in.readInt();
 		int indexOffset = in.readInt();
 		int vertexOffset = in.readInt();
+		System.err.println(String.format("material index %d, %d indexes starting at %d, vertices starting at %d", materialIndex, indexCount, indexOffset, vertexOffset));
 		Shape shape = new Shape(indexOffset, indexCount);
 		GLMaterial factory = factories.getMaterial(save.getId());
 		GLElement element = new GLElement(shape, factory, save, vertexOffset);
@@ -163,9 +168,12 @@ public class ObjSaver {
 	
 	public static String readString(DataInputStream in) throws IOException {
 		int length = in.readInt();
+		System.err.print("" + length + " byte string: ");
 		byte[] bytes = new byte[length];
 		in.read(bytes);
-		return new String(bytes, "ascii");
+		String string = new String(bytes, "ascii");
+		System.err.println("\"" + string + "\"");
+		return string;
 	}
 
 }
