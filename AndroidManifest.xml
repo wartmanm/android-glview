@@ -12,7 +12,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name="com.github.wartman4404.glview.demo.OpenGLES20Basic"
+            android:name="com.github.wartman4404.glview.demo.GLViewDemo"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
