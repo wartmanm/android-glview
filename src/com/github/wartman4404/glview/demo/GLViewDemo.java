@@ -21,7 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
-public class OpenGLES20Basic extends Activity {
+public class GLViewDemo extends Activity {
 
     private GLObjectView mGLView;
     
@@ -36,6 +36,7 @@ public class OpenGLES20Basic extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         mGLView = (GLObjectView) findViewById(R.id.glview);
+        mGLView.load();
         BoundingBox bounds = mGLView.getRenderer().getBounds();
         float centerX = bounds.centerX(), centerY = bounds.centerY(), centerZ = bounds.centerZ();
         final GLAnimation spin = new RotateAnimation(centerX, centerY, centerZ, 0, 1, 0, 0, 360);
