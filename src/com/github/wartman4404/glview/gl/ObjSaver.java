@@ -175,5 +175,18 @@ public class ObjSaver {
 		System.err.println("\"" + string + "\"");
 		return string;
 	}
+	
+	public static short getHighestIndex(ByteBuffer indexBuf, int start, int count) {
+		ByteBuffer buf = indexBuf.duplicate();
+		buf.position(start);
+		buf.limit(start + count);
+		buf.order(indexBuf.order());
+		short max = 0;
+		while(buf.hasRemaining()) {
+			short read = buf.getShort();
+			max = max > read ? max : read;
+		}
+		return max;
+	}
 
 }

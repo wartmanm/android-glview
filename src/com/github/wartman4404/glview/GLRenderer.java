@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
+import java.nio.ByteOrder;
 import java.util.Map;
 import java.util.Queue;
 
@@ -13,6 +14,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.github.wartman4404.glview.animation.GLAnimation.AnimateInstance;
 import com.github.wartman4404.glview.gl.BoundingBox;
+import com.github.wartman4404.glview.gl.BufferDumper;
+import com.github.wartman4404.glview.gl.GLElement;
 import com.github.wartman4404.glview.gl.GLElementGroup;
 import com.github.wartman4404.glview.gl.GLHelper;
 import com.github.wartman4404.glview.gl.ObjSaver;
@@ -80,6 +83,30 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     	loadBoundingBox();
     	recenterView();
     	pendingState = PENDING_LOAD;
+    }
+    
+    private void dump() {
+    	vertBuf.order(ByteOrder.nativeOrder());
+    	idxBuf.order(ByteOrder.nativeOrder());
+    	for (String s: mGLElements.keySet()) {
+    		Log.i("dump", "element group " + s);
+    		GLElementGroup eg = mGLElements.get(s);
+    		for (int i = 0; i < eg.getElements().length; i++) {
+    			Log.i("dump", "element " + i + " of " + eg.getElements().length);
+    			GLElement e = eg.getElements()[i];
+    			Shape shape = e.shape;
+    			GLMaterial material = e.factory;
+
+    			Log.i("dump", String.format("base offset %d, material id %d, material name %s", e.baseOffset, e.materialProps.getId(), e.materialProps.getName()));
+    			Log.i("dump", String.format("shape index offset %d, index count %d", shape.indexOffset, shape.indexCount));
+    			short highestIndex = ObjSaver.getHighestIndex(idxBuf, shape.indexOffset, shape.indexCount);
+    			Log.i("dump", String.format("highest index: %d", highestIndex));
+    			int stride = material.getFullStride();
+    			Log.i("dump", String.format("at a stride of %d, corresponds to %d from base offset %d or %d", stride, stride * highestIndex, e.baseOffset, stride * highestIndex + e.baseOffset));
+    			Log.i("dump", "dumping....");
+    			BufferDumper.dumpByType(vertBuf, e.baseOffset, highestIndex, e.materialProps.getId());
+    		}
+    	}
     }
     
     protected void loadBoundingBox() {

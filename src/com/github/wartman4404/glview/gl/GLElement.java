@@ -8,10 +8,10 @@ import com.github.wartman4404.glview.material.MaterialLoader;
 import com.github.wartman4404.glview.material.GLMaterial.GLMaterialInstance;
 
 public class GLElement {
-	private final Shape shape;
-	private final GLMaterial factory;
-	private final GLMaterialSave materialProps;
-	private int baseOffset;
+	public final Shape shape;
+	public final GLMaterial factory;
+	public final GLMaterialSave materialProps;
+	public int baseOffset;
 	private GLMaterialInstance material = null;
 	public GLElement(Shape shape, GLMaterial factory, GLMaterialSave materialProps, int baseOffset) {
 		this.shape = shape;

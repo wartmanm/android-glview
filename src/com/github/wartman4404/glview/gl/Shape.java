@@ -3,8 +3,8 @@ package com.github.wartman4404.glview.gl;
 import android.opengl.GLES20;
 
 public class Shape {
-    private final int indexOffset;
-    private final int indexCount;
+    public final int indexOffset;
+    public final int indexCount;
     public static final int LIGHT_SIZE = 9;
     public static final int LIGHT_DIRECTION_OFFSET = 0;
     public static final int LIGHT_AMBIENT_COLOR_OFFSET = 3;
