@@ -19,7 +19,7 @@ public class GLHelper {
 				break;
 			}
 			wasEverError = true;
-			Log.i("gl-error", getErrorName(error));
+			Log.i("glview", "gl error: " + getErrorName(error));
 		}
 		return wasEverError;
 	}
@@ -108,35 +108,35 @@ public class GLHelper {
 	public static void logAttribNames(int program) {
         int[] result = new int[4];
         if (!GLES20.glIsProgram(program)) {
-        	Log.e("glhelper", "No such program: " + program);
+        	Log.e("glview", "No such program: " + program);
         	return;
         }
         GLES20.glGetProgramiv(program, GLES20.GL_ACTIVE_ATTRIBUTES, result, 0);
         GLHelper.glCheckErrorAndThrow();
         int count = result[0];
-        Log.i("glstatus", "active attribs: " + count);
+        Log.i("glview", "active attribs: " + count);
         if (count > 0) {
         	for (int i = 0; i < count; i++) {
         		AttribParameters params = getActiveAttrib(program, i);
-        		Log.i("glstatus", "attrib "  + i + ": \"" + params.name + "\", type " + getAttribType(params.type) + ", size " + params.size);
+        		Log.i("glview", "attrib "  + i + ": \"" + params.name + "\", type " + getAttribType(params.type) + ", size " + params.size);
         	}
         }
 	}
 	
 	public static void logUniformNames(int program) {
         if (!GLES20.glIsProgram(program)) {
-        	Log.e("glhelper", "No such program: " + program);
+        	Log.e("glview", "No such program: " + program);
         	return;
         }
 		int[] result = new int[4];
 		GLES20.glGetProgramiv(program, GLES20.GL_ACTIVE_UNIFORMS, result, 0);
 		GLHelper.glCheckErrorAndThrow();
 		int count = result[0];
-		Log.i("glstatus", "active uniforms: " + count);
+		Log.i("glview", "active uniforms: " + count);
 		if (count > 0) {
 			for (int i = 0; i < count; i++) {
 				AttribParameters params = getActiveUniform(program, i);
-        		Log.i("glstatus", "uniform "  + i + ": \"" + params.name + "\", type " + getAttribType(params.type) + ", size " + params.size);
+        		Log.i("glview", "uniform "  + i + ": \"" + params.name + "\", type " + getAttribType(params.type) + ", size " + params.size);
 			}
 		}
 	}
@@ -183,7 +183,7 @@ public class GLHelper {
 	}
 
 	public static void checkShaderLog(String kind, String log, int code) {
-		Log.i(kind, log);
+		Log.i("glview", kind + ": " + log);
 		if (log.indexOf("error") != -1) {
 			throw new ShaderCompileException(log, code);
 		}

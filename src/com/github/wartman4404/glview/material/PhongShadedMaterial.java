@@ -102,7 +102,7 @@ public abstract class PhongShadedMaterial implements GLMaterial {
 
     public void destroyProgram() {
     	if (!GLES20.glIsProgram(mProgram)) {
-    		Log.i("phongshadedmaterial", "program " + mProgram + " doesn't exist!");
+    		Log.i("glview", "program " + mProgram + " doesn't exist!");
     		return;
     	}
     	int[] ret = new int[1];

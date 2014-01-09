@@ -27,7 +27,7 @@ public class GLElement {
 	}
 	public void draw(float[] MVPMatrix, float[] MVMatrix, float[] NormalMatrix,  float[] lights) {
         if (material == null) {
-        	Log.w(String.format("glelement %h", this), "material is still null!!");
+        	Log.w("glview", String.format("glelement %h: material is still null!!", this));
         } else {
         	material.loadMaterial(baseOffset);
         	material.loadLights(lights);

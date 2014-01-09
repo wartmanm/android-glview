@@ -136,13 +136,13 @@ public class GLObjectView extends GLSurfaceView {
         
         attributesArray.recycle();
 
-    	Log.i("glstopwatch", "got material filename: " + materialSource + ", object filename: " + vertexSource);
+    	Log.i("glview", "glstopwatch: got material filename: " + materialSource + ", object filename: " + vertexSource);
     }
     
     public void reload(final Runnable callback) {
     	final GLRenderer renderer = getRenderer();
     	if (renderer == null) {
-    		Log.i("globjectview", "creating new renderer");
+    		Log.i("glview", "globjectview: creating new renderer");
     		createRenderer(this.getContext(), materialSource, vertexSource);
     		if (callback != null) {
     			getRenderer().runOnGLThread(callback);
@@ -193,7 +193,7 @@ public class GLObjectView extends GLSurfaceView {
     		materialIn.close();
     		vertexIn.close();
     	} catch (IOException e) {
-    		Log.i("globjectview", "failed to reload files :(");
+    		Log.i("glview", "globjectview: failed to reload files :(");
     	}
     }
     
@@ -226,7 +226,7 @@ public class GLObjectView extends GLSurfaceView {
         	this.setRenderer(renderer);
         	this.mRenderer = renderer;
         } catch (IOException e) {
-        	Log.e("globjectview", "IO exception while loading renderer :(");
+        	Log.e("glview", "globjectview: IO exception while loading renderer :(");
         	e.printStackTrace();
         }
         // ask for transparency from surface holder
@@ -251,14 +251,14 @@ public class GLObjectView extends GLSurfaceView {
     	private InputStream tryOpenStream(String name, Context context) throws FileNotFoundException, IOException {
     		try {
     			if (name.startsWith("/")) {
-    				Log.i("globjectview", "opening file " + name);
+    				Log.i("glview", "globjectview: opening file " + name);
     				return new BufferedInputStream(new FileInputStream(name));
     			} else {
-    				Log.i("globjectview", "opening asset " + name);
+    				Log.i("glview", "globjectview: opening asset " + name);
     				return new BufferedInputStream(context.getAssets().open(name));
     			}
     		} catch (IOException e) {
-    			Log.e("globjectview", "failed to open \"" + name + "\" :(");
+    			Log.e("glview", "globjectview: failed to open \"" + name + "\" :(");
     			throw e;
     		}
     	}

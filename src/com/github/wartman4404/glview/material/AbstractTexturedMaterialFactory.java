@@ -59,13 +59,13 @@ public abstract class AbstractTexturedMaterialFactory extends PhongShadedMateria
         	is = loader.getMaterialStream(filename);
             bitmap = BitmapFactory.decodeStream(is);
         } catch (IOException e) {
-        	Log.e("onsurfacechanged", "failed loading texture bitmap " + filename);
+        	Log.e("glview", "onsurfacechanged: failed loading texture bitmap " + filename);
         } finally {
             try {
             	if (is != null)
             		is.close();
             } catch(IOException e) {
-            	Log.e("onsurfacechanged", "failed closing texture bitmap" + filename);
+            	Log.e("glview", "onsurfacechanged: failed closing texture bitmap" + filename);
             }
         }
         return bitmap;

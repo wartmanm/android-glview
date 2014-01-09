@@ -104,7 +104,7 @@ public class ObjSaver {
 	
 	private static GLMaterialSave[] loadMaterials(DataInputStream in) throws IOException {
 		int count = in.readInt();
-		Log.i("loadObject", "got " + count + " materials");
+		Log.i("glview", "loadObject: got " + count + " materials");
 		GLMaterialSave[] materials = new GLMaterialSave[count];
 		for (int i = 0; i < count; i++) {
 			int id = in.readByte();
@@ -135,7 +135,7 @@ public class ObjSaver {
 	private static Map<String, GLElementGroup> loadElements(DataInputStream in, GLMaterialSave[] materials, MaterialFactories factories) throws IOException {
 		Map<String, GLElementGroup> groups = new HashMap<String, GLElementGroup>();
 		int count = in.readInt();
-		Log.i("loadObject", "got " + count + " element groups");
+		Log.i("glview", "loadObject: got " + count + " element groups");
 
 		for (int i = 0; i < count; i++) {
 			String name = readString(in);

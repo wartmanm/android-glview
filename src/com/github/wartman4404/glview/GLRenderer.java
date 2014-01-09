@@ -66,14 +66,14 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     
     public void loadFile(InputStream materialIn, InputStream elementIn) throws IOException {
     	if (loaded) {
-    		Log.e("glrenderer", "called loadFile while still loaded!");
+    		Log.e("glview", "glrenderer: called loadFile while still loaded!");
     		return;
     	}
     	if (pendingState == PENDING_UNLOAD) {
-    		Log.e("glrenderer", "canceling pending unload!");
+    		Log.e("glview", "glrenderer: canceling pending unload!");
     	}
     	VBOData data = ObjSaver.loadFile(materialIn, elementIn, factories);
-    	Log.i("glrenderer", "loaded file");
+    	Log.i("glview", "glrenderer: loaded file");
     	mGLElements = data.elements;
     	vertBuf = data.vertBuf;
     	idxBuf = data.idxBuf;
@@ -104,7 +104,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
     	try {
-    		Log.i("glrenderer", "onsurfacecreated");
+    		Log.i("glview", "glrenderer: onsurfacecreated");
     		// Set the background frame color
     		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
     		GLES20.glClearDepthf(1);
@@ -113,8 +113,8 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     		createMaterials();
 
         } catch (GLException e) {
-        	Log.i("glrenderer", "Got GL exception: " + e.getMessage());
-        	Log.i("glrenderer", e.getStackTrace()[1].toString());
+        	Log.i("glview", "glrenderer: Got GL exception: " + e.getMessage());
+        	Log.i("glview", e.getStackTrace()[1].toString());
         	if (mErrorListener != null) {
         		mErrorListener.onGLException(e);
         	}
@@ -171,8 +171,8 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     		loaded = true;
     		pendingState = NOT_PENDING;
     	} catch (GLException e) {
-    		Log.i("glrenderer", "Got GL exception: " + e.getMessage());
-    		Log.i("glrenderer", e.getStackTrace()[1].toString());
+    		Log.i("glview", "glrenderer: Got GL exception: " + e.getMessage());
+    		Log.i("glview", e.getStackTrace()[1].toString());
     		if (mErrorListener != null) {
     			mErrorListener.onGLException(e);
     		}
@@ -185,7 +185,6 @@ public class GLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 unused) {
-//    	Log.i("glrenderer", "ondraw");
     	if (pendingState == PENDING_UNLOAD) {
     		gl_unload();
     	} else if (pendingState == PENDING_LOAD) {
@@ -199,7 +198,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
 
 
     		if (!checkBuffers()) {
-    			Log.i("glrenderer", "bailing because no buffers!");
+    			Log.i("glview", "glrenderer: bailing because no buffers!");
     			mErrorListener.onGLException(new GLException(-1, "you ain't got no buffers, son!"));
     			return;
     		}
@@ -213,8 +212,8 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     			mGLElements.get(s).draw(time, mVMatrix, mProjMatrix, mLights);
     		}
         } catch (GLException e) {
-        	Log.i("glrenderer", "Got GL exception: " + e.getMessage());
-        	Log.i("glrenderer", e.getStackTrace()[1].toString());
+        	Log.i("glview", "glrenderer: Got GL exception: " + e.getMessage());
+        	Log.i("glview", e.getStackTrace()[1].toString());
         	if (mErrorListener != null) {
         		mErrorListener.onGLException(e);
         	}
@@ -236,7 +235,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     private boolean checkBuffer(int binding, int buffer, int[] result, String name) {
     	GLES20.glGetIntegerv(binding, result, 0);
     	if (result[0] == 0) {
-    		Log.i("buffers", "buffer " + name + " doesn't exist!");
+    		Log.i("glview", "buffers: buffer " + name + " doesn't exist!");
     		return false;
     	} else {
     		GLES20.glGetBufferParameteriv(buffer, GLES20.GL_BUFFER_SIZE, result, 1);
@@ -282,11 +281,10 @@ public class GLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 unused, int width, int height) {
-    	Log.i("glview", "onsurfacechanged");
+    	Log.i("glview", "glrenderer: onsurfacechanged");
     	GLES20.glClearColor(0f, 0f, 0f, 0f);
         // Adjust the viewport based on geometry changes,
         // such as screen rotation
-    	Log.i("onsurfacechanged", bbox.toString());
         GLES20.glViewport(0, 0, width, height);
         float screenRatio = (float) width / height;
         float xratio = bbox.width() / (2*screenRatio);
@@ -294,18 +292,18 @@ public class GLRenderer implements GLSurfaceView.Renderer {
         float ratio = xratio > yratio ? xratio : yratio;
         float screenx = screenRatio*ratio;
         float screeny = ratio;
-        Log.i("onsurfacechanged", "screenratio is " + screenRatio + ", xratio is " + xratio + ", yratio is " + yratio);
-        Log.i("onsurfacechanged", String.format("setting width to %.3f, %.3f, height to %.3f, %.3f", -screenx, screenx, -screeny, screeny));
+        Log.i("glview", "glrenderer: onsurfacechanged: screenratio is " + screenRatio + ", xratio is " + xratio + ", yratio is " + yratio);
+        Log.i("glview", String.format("glrenderer: setting width to %.3f, %.3f, height to %.3f, %.3f", -screenx, screenx, -screeny, screeny));
         
         Matrix.frustumM(mProjMatrix, 0, -screenx, screenx, -screeny, screeny, 1.9f, bbox.depth()+2f);
 
-        Log.i("onsurfacechanged", "loading materials");
+        Log.i("glview", "onsurfacechanged: loading materials");
 
         try {
         	createMaterialInstances();
         } catch (GLException e) {
-        	Log.i("glrenderer", "Got GL exception: " + e.getMessage());
-        	Log.i("glrenderer", e.getStackTrace()[1].toString());
+        	Log.i("glview", "glrenderer: Got GL exception: " + e.getMessage());
+        	Log.i("glview", e.getStackTrace()[1].toString());
         	if (mErrorListener != null) {
         		mErrorListener.onGLException(e);
         	}
@@ -338,7 +336,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     
     public void unload(Runnable callback) {
     	if (!loaded) {
-    		Log.i("glrenderer", "called unload while already unloaded!");
+    		Log.i("glview", "glrenderer: called unload while already unloaded!");
     		return;
     	}
     	pendingState = PENDING_UNLOAD;
@@ -354,7 +352,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     private void runCallbacks() {
     	int size = glRunnables.size();
     	if (size > 0) {
-    		Log.i("glrenderer", "running " + size + " callbacks");
+    		Log.i("glview", "glrenderer: running " + size + " callbacks");
     	}
     	// if more runnables are added, wait until next time to process them
     	// this is probably what the caller wants, otherwise why not
@@ -379,7 +377,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     		unloadBuffer(mIdxBufHandle);
     		GLHelper.glCheckErrorAndThrow();
     	} catch (RuntimeException e) {
-    		Log.e("glrenderer", "Error while unloading gl resources");
+    		Log.e("glview", "glrenderer: Error while unloading gl resources");
     		throw(e);
     	}
     	loaded = false;
