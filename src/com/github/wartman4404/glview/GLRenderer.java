@@ -59,7 +59,6 @@ public class GLRenderer implements GLSurfaceView.Renderer {
 	private Queue<Runnable> glRunnables = new ArrayDeque<Runnable>();
     
     public GLRenderer(InputStream materialIn, InputStream elementIn, MaterialLoader loader, MaterialFactories factories) throws IOException {
-    	Log.i("glrenderer", String.format("changing glrenderer %h into existence", this));
     	this.loader = loader;
     	this.factories = factories;
     	loadFile(materialIn, elementIn);
@@ -67,7 +66,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     
     public void loadFile(InputStream materialIn, InputStream elementIn) throws IOException {
     	if (loaded) {
-    		Log.e("glrenderer", "we are still loaded!");
+    		Log.e("glrenderer", "called loadFile while still loaded!");
     		return;
     	}
     	if (pendingState == PENDING_UNLOAD) {
@@ -105,7 +104,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
     	try {
-    		Log.i("glview", "onsurfacecreated");
+    		Log.i("glrenderer", "onsurfacecreated");
     		// Set the background frame color
     		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
     		GLES20.glClearDepthf(1);
@@ -339,7 +338,7 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     
     public void unload(Runnable callback) {
     	if (!loaded) {
-    		Log.i("glrenderer", "already unloaded!");
+    		Log.i("glrenderer", "called unload while already unloaded!");
     		return;
     	}
     	pendingState = PENDING_UNLOAD;
@@ -367,7 +366,6 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     }
     
     private void gl_unload() {
-    	Log.i("glrenderer", "unloading");
     	try {
     		for (String s: mGLElements.keySet()) {
     			GLElementGroup eg = mGLElements.get(s);
@@ -386,12 +384,9 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     	}
     	loaded = false;
     	pendingState = NOT_PENDING;
-    	Log.i("glrenderer", "done unloading");
     }
     
     private void unloadBuffer(int bufferHandle) {
-    	Log.i("glrenderer", "unloading buffers!!!");
-    	new RuntimeException("buffers!!!").printStackTrace();
     	if (GLES20.glIsBuffer(bufferHandle)) {
     		GLES20.glDeleteBuffers(1, new int[] { bufferHandle }, 0);
     	}

@@ -13,7 +13,6 @@ public class AnimationStack implements AnimateInstance {
 
 	public void addAnimation(AnimateInstance anim, int order) {
 		anims.put(order, anim);
-		Log.i("animstack", "added " + getAnimationType(anim) + " at " + order);
 	}
 	public AnimationStack() {
 		anims = new TreeMap<Integer, AnimateInstance>();
@@ -35,7 +34,6 @@ public class AnimationStack implements AnimateInstance {
 		while(true) {
 			AnimateInstance instance = anims.get(i);
 			if (instance.isEnded(time)) {
-				Log.i("animstack", "removed " + getAnimationType(instance) + " from " + i);
 				anims.remove(i);
 			} else {
 				anims.get(i).loadMatrix(time, tempMatrix);

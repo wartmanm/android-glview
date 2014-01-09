@@ -153,14 +153,12 @@ public class GLObjectView extends GLSurfaceView {
     			getRenderer().runOnGLThread(callback);
     		}
     	} else {
-    		Log.i("globjectview", "asking renderer to reload");
+        // is this necessary?
     		final int oldMode = getRenderMode();
     		setRenderMode(RENDERMODE_WHEN_DIRTY);
     		getRenderer().unload(new Runnable() {
     			public void run() {
-    				Log.i("globjectview", "glrenderer unload callback");
     				loadRenderer(getContext(), materialSource, vertexSource);
-    				Log.i("globjectview", "done initial reload");
     				setRenderMode(oldMode);
     				if (callback != null) {
     					getRenderer().runOnGLThread(callback);
@@ -195,7 +193,7 @@ public class GLObjectView extends GLSurfaceView {
     		materialIn.close();
     		vertexIn.close();
     	} catch (IOException e) {
-    		Log.i("GLObjectView", "failed to reload files :(");
+    		Log.i("globjectview", "failed to reload files :(");
     	}
     }
     

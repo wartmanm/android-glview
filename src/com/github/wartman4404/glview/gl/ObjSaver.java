@@ -62,7 +62,6 @@ public class ObjSaver {
 			if (materials[id] == null) {
 				materials[id] = getFactory(id);
 			}
-			Log.i("defaultmaterials", "asked for material id " + id);
 			return materials[id];
 		}
 		public GLMaterial[] getLoadedMaterials() {

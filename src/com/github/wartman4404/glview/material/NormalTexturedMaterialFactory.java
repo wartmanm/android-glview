@@ -117,7 +117,6 @@ public class NormalTexturedMaterialFactory extends AbstractTexturedMaterialFacto
 
 	@Override
 	public NormalTexturedMaterial createInstance(GLMaterialSave genericSave, MaterialLoader loader) {
-		Log.i("normaltexture", "called createInstance");
 		if (!(genericSave instanceof NormalTexturedMaterialSave)) {
 			throw new IllegalArgumentException("got " + genericSave.getClass().getSimpleName() + " instead of " + NormalTexturedMaterialSave.class.getSimpleName());
 		}
