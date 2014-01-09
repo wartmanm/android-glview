@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GLObjectView">
+        <attr name="src_material" format="string"/>
+        <attr name="src_object" format="string"/>
+        <attr name="light_dir_x" format="float"/>
+        <attr name="light_dir_y" format="float"/>
+        <attr name="light_dir_z" format="float"/>
+        <attr name="light_ambient_intensity" format="float"/>
+        <attr name="light_directional_intensity" format="float"/>
+    </declare-styleable>
+</resources>
