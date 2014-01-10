@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.github.wartman4404.glview.GLObjectView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/glview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:light_ambient_intensity=".2"
+    app:light_dir_x="-0.5"
+    app:light_dir_y="-0.5"
+    app:light_dir_z="0.0"
+    app:light_directional_intensity=".5"
+    app:src_material="teapot.jbom"
+    app:src_object="@string/teapot_object" />
