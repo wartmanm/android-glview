@@ -47,7 +47,7 @@ public class NormalTexturedMaterialFactory extends AbstractTexturedMaterialFacto
         "varying vec3 vTangent;\n" +
         "void saveColor() {\n" +
         "  vTexture = vec2(mTexture.x, 1.0-mTexture.y);\n" +
-        "  vTangent = mTangent;\n" +
+        "  vTangent = normalize(mat3(uNormalMatrix) * mTangent);\n" +
         "}\n";
 
     private final String extraFragmentShaderCode =
@@ -66,14 +66,9 @@ public class NormalTexturedMaterialFactory extends AbstractTexturedMaterialFacto
         "  normalDir = normalize(mat3(vTangent, bitangent, vNormal) * textureNormal);\n" +
 
         "  float diffuseIntensity = max(dot(lightDir, normalDir), 0.0);\n" +
-        "  vec3 specularColor;\n" +
-        "  if (dot(vNormal, uLightDir) < 0.0) {\n" +
-        "    specularColor = vec3(0,0,0);\n" +
-        "  } else {\n" +
-        "    float specularIntensity = max(dot(reflect(-lightDir, normalDir), vec3(viewDirection)), 0.0);\n" + // add shininess exponent
-        "    specularIntensity = pow(specularIntensity, uSpecularHardness);\n" +
-        "    specularColor = specularIntensity * uSpecularPower * uDirectedLight;\n" + // multiply by light color - material color doesn't matter
-        "  }\n" +
+        "  float specularIntensity = max(dot(reflect(-lightDir, normalDir), vec3(viewDirection)), 0.0);\n" + // add shininess exponent
+        "  specularIntensity = pow(specularIntensity, uSpecularHardness);\n" +
+        "  specularColor = specularIntensity * uSpecularPower * uDirectedLight;\n" + // multiply by light color - material color doesn't matter
         "  vec3 diffuseColor = vec3(uColor) * (diffuseIntensity * uDiffusePower * uDirectedLight + uAmbientLight);\n" + // multiply material color by diffuse + ambient light colors
         "  gl_FragColor = vec4(diffuseColor + specularColor, 1);\n" +
         "}\n";

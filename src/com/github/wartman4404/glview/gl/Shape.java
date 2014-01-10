@@ -16,15 +16,15 @@ public class Shape {
     }
     
     public void draw(int mProgram, float[] mMVPMatrix, float[] mMVMatrix, float[] mNormalMatrix) {
-        int uMVMatrix = GLES20.glGetUniformLocation(mProgram, "uMVMatrix");
+        int uMVMatrix = GLES20.glGetUniformLocation(mProgram, "mvMatrix");
         if (uMVMatrix != -1)
         	GLES20.glUniformMatrix4fv(uMVMatrix, 1, false, mMVMatrix, 0);
 
-        int uNormalMatrix = GLES20.glGetUniformLocation(mProgram, "uNormalMatrix");
+        int uNormalMatrix = GLES20.glGetUniformLocation(mProgram, "normalMatrix");
         if (uNormalMatrix != -1)
         	GLES20.glUniformMatrix4fv(uNormalMatrix, 1, false, mNormalMatrix, 0);
 
-        int uMVPMatrix = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
+        int uMVPMatrix = GLES20.glGetUniformLocation(mProgram, "mvpMatrix");
         if (uMVPMatrix != -1)
         	GLES20.glUniformMatrix4fv(uMVPMatrix, 1, false, mMVPMatrix, 0);
 

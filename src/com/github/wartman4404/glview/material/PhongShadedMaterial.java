@@ -41,18 +41,18 @@ public abstract class PhongShadedMaterial implements GLMaterial {
 	protected abstract String getFragmentShaderCode();
 	
     private final String vertexShaderHeader =
-        "uniform mat4 uMVPMatrix;\n" +
-        "uniform mat4 uMVMatrix;\n" +
-        "uniform mat4 uNormalMatrix;\n" +
+        "uniform mat4 mvpMatrix;\n" +
+        "uniform mat4 mvMatrix;\n" +
+        "uniform mat4 normalMatrix;\n" +
         "attribute vec4 mPosition;\n" +
         "attribute vec3 mNormal;\n" +
         "varying vec3 vNormal;\n" +
         "varying vec3 vPosition;\n";
     private final String vertexShaderMain =
         "void main() {\n" +
-        "  gl_Position = uMVPMatrix * mPosition;\n" +
-        "  vNormal = normalize(mat3(uNormalMatrix) * mNormal);\n" +
-        "  vPosition = vec3(uMVMatrix * mPosition);\n" +
+        "  gl_Position = mvpMatrix * mPosition;\n" +
+        "  vNormal = normalize(mat3(normalMatrix) * mNormal);\n" +
+        "  vPosition = vec3(mvMatrix * mPosition);\n" +
         "  saveColor();\n" +
         "}\n";
 
@@ -76,13 +76,9 @@ public abstract class PhongShadedMaterial implements GLMaterial {
         "  diffuseIntensity = diffuseIntensity * 3.0;\n" +
         // test for light coming from right side goes here
         "  vec3 specularColor;\n" +
-        "  if (dot(vNormal, uLightDir) < 0.0) {\n" +
-        "    specularColor = vec3(0,0,0);\n" +
-        "  } else {\n" +
-        "    float specularIntensity = max(dot(reflect(-lightDir, normalDir), vec3(viewDirection)), 0.0);\n" + // add shininess exponent
-        "    specularIntensity = pow(specularIntensity, uSpecularHardness);\n" +
-        "    specularColor = specularIntensity * uSpecularPower * uDirectedLight;\n" + // multiply by light color - material color doesn't matter
-        "  } " +
+        "  float specularIntensity = max(dot(reflect(-lightDir, normalDir), vec3(viewDirection)), 0.0);\n" + // add shininess exponent
+        "  specularIntensity = pow(specularIntensity, uSpecularHardness);\n" +
+        "  specularColor = specularIntensity * uSpecularPower * uDirectedLight;\n" + // multiply by light color - material color doesn't matter
         "  vec3 diffuseColor = vec3(color) * (diffuseIntensity * uDiffusePower * uDirectedLight + uAmbientLight);\n" + // multiply material color by diffuse + ambient light colors
         "  gl_FragColor = vec4(diffuseColor + specularColor, 1);\n" +
         "}\n";
